@@ -1424,7 +1424,6 @@ section,
   font-weight: 600;
 }
 
-
 .agenda-table {
   max-width: 1000px;
   margin: 50px auto;
@@ -1432,11 +1431,29 @@ section,
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
+  overflow-x: auto; /* Permite desplazamiento horizontal si es necesario */
 }
-.agenda-table th, .agenda-table td {
+
+.agenda-table .table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto; /* Asegura que en móvil la tabla no se corte */
+}
+
+.agenda-table table {
+  width: 100%;
+  min-width: 600px; /* Evita que se deforme en pantallas pequeñas */
+  border-collapse: collapse;
+}
+
+.agenda-table th,
+.agenda-table td {
   text-align: center;
   vertical-align: middle; /* Centra verticalmente */
+  padding: 10px;
+  white-space: nowrap; /* Evita que el contenido se divida en varias líneas */
 }
+
 .btn-reservar {
   background-color: #25d366; /* Verde de WhatsApp */
   color: #fff;
@@ -1448,14 +1465,63 @@ section,
   align-items: center;
   justify-content: center;
   gap: 8px;
+  font-size: 14px;
 }
+
 .btn-reservar:hover {
   background-color: #128c7e; /* Verde más oscuro al pasar el mouse */
 }
+
 .btn-reservar:disabled {
   background-color: #6c757d; /* Gris para botones deshabilitados */
-  cursor: not-allowed; /* Cambia el cursor */
+  cursor: not-allowed;
 }
+
+/* Estilos para dispositivos medianos (tablets) */
+@media (max-width: 992px) {
+  .agenda-table {
+    padding: 15px;
+  }
+
+  .agenda-table table {
+    min-width: 100%;
+  }
+
+  .btn-reservar {
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+}
+
+/* Estilos para dispositivos pequeños (móviles) */
+@media (max-width: 768px) {
+  .agenda-table {
+    padding: 10px;
+    margin: 20px auto;
+  }
+
+  .agenda-table .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Mejora el scroll en móviles */
+  }
+
+  .agenda-table table {
+    width: 100%;
+    min-width: 200px;
+  }
+
+  .agenda-table th,
+  .agenda-table td {
+    font-size: 12px; /* Reduce el tamaño del texto en móvil */
+    padding: 8px;
+  }
+
+  .btn-reservar {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+}
+
 
 .info-wrap {
   border-radius: 8px; /* Bordes redondeados */
