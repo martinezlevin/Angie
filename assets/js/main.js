@@ -183,3 +183,57 @@ function reservarCita(dia, horario, tipo) {
   const whatsappUrl = `https://wa.me/5492954568514?text=${encodeURIComponent(mensaje)}`;
   window.open(whatsappUrl, '_blank');
 }
+
+
+//Agenda dinamica
+
+const url = "https://script.google.com/macros/s/AKfycbx4ov5867HFk_d9Z0TRZd0HGQ7uGliAPShm_5lkM4LGs0zCJAG9QMgYGtKqssQ9gvco/exec";
+
+async function cargarDatos() {
+  const url = "https://script.google.com/macros/s/AKfycbx4ov5867HFk_d9Z0TRZd0HGQ7uGliAPShm_5lkM4LGs0zCJAG9QMgYGtKqssQ9gvco/exec";
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    mostrarAgenda(data);
+  } catch (error) {
+    console.error("Error al cargar los datos:", error);
+  }
+}
+
+function mostrarAgenda(data) {
+  const tbody = document.querySelector(".agenda-table tbody");
+  tbody.innerHTML = ""; // Limpiar la tabla antes de agregar nuevos datos
+
+  data.forEach((fila) => {
+    const tr = document.createElement("tr");
+
+    // Día y Horario
+    tr.innerHTML = `
+      <td>${fila.Día}</td>
+      <td>${fila.Horario}</td>
+      <td>
+        ${fila.Presencial === "Sí" ? 
+          `<button class="btn btn-reservar" onclick="reservarCita('${fila.Día}', '${fila.Horario}', 'Presencial')">Reservar <i class="bi bi-whatsapp"></i></button>` : 
+          `<button class="btn btn-reservar" disabled>Reservar <i class="bi bi-whatsapp"></i></button>`
+        }
+      </td>
+      <td>
+        ${fila.Virtual === "Sí" ? 
+          `<button class="btn btn-reservar" onclick="reservarCita('${fila.Día}', '${fila.Horario}', 'Virtual')">Reservar <i class="bi bi-whatsapp"></i></button>` : 
+          `<button class="btn btn-reservar" disabled>Reservar <i class="bi bi-whatsapp"></i></button>`
+        }
+      </td>
+    `;
+
+    tbody.appendChild(tr);
+  });
+}
+
+function reservarCita(dia, horario, tipo) {
+  const mensaje = `Hola, Licenciada Angie 👋. Te contacto a través de tu página web para reservar una cita ${tipo} para el ${dia} a las ${horario}. ¿Podrías confirmarme si está disponible? 😊 ¡Muchas gracias!`;
+  const whatsappUrl = `https://wa.me/5492954568514?text=${encodeURIComponent(mensaje)}`;
+  window.open(whatsappUrl, '_blank');
+}
+
+// Cargar los datos al abrir la página
+document.addEventListener("DOMContentLoaded", cargarDatos);
